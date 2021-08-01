@@ -1,8 +1,8 @@
 <template>
   <div class="charts">
     <h2>Charts</h2>
-    <div class="charts__tools mb-4">
-      <div class="chart__filter">
+    <div class="charts__tools d-flex mb-4">
+      <div class="charts__filter">
         <b-form-select
           v-model="filter"
           :options="[
@@ -13,11 +13,19 @@
            ]"
         ></b-form-select>
       </div>
-      <div class="chart__sort"></div>
+      <div class="charts__sort ml-auto">
+        <b-form-select
+          v-model="sort"
+          :options="[
+            {value: 'newFirst', text: 'New First'},
+            {value: 'oldFirst', text: 'Old First'}
+           ]"
+        ></b-form-select>
+      </div>
     </div>
     <div class="charts__grid">
       <div class="charts__chart"
-           v-for="chart in filterCharts"
+           v-for="chart in filterSortCharts"
            :key="chart.id"
       >
         <app-chart
@@ -38,11 +46,12 @@
     data() {
       return {
         filter: '',
+        sort: 'newFirst',
         charts: [
           {
             id: 1,
             title: 'temperature',
-            date: '01.08.2021',
+            date: '2021-08-05',
             data: {
               labels: ['June', 'July', 'August'],
               datasets: [{
@@ -57,7 +66,7 @@
           {
             id: 2,
             title: 'light',
-            date: '01.08.2021',
+            date: '2021-08-03',
             data: {
               labels: ['June', 'July', 'August'],
               datasets: [{
@@ -72,7 +81,7 @@
           {
             id: 3,
             title: 'humidity',
-            date: '01.08.2021',
+            date: '2021-08-02',
             data: {
               labels: ['June', 'July', 'August'],
               datasets: [{
@@ -87,7 +96,7 @@
           {
             id: 4,
             title: 'humidity',
-            date: '31.07.2021',
+            date: '2021-07-31',
             data: {
               labels: ['June', 'July', 'August'],
               datasets: [{
@@ -100,9 +109,9 @@
             }
           },
           {
-            id: 4,
+            id: 5,
             title: 'humidity',
-            date: '4.08.2021',
+            date: '2021-08-04',
             data: {
               labels: ['June', 'July', 'August'],
               datasets: [{
@@ -118,9 +127,16 @@
       }
     },
     computed: {
-      filterCharts() {
-
-        return this.filter ? this.charts.filter(chart => chart.title === this.filter) : this.charts
+      filterSortCharts() {
+        const ths = this
+        const sortCharts = this.charts.sort(function(a,b){
+          if (ths.sort === 'newFirst') {
+            return Date.parse(b.date) - Date.parse(a.date);
+          } else {
+            return Date.parse(a.date) - Date.parse(b.date);
+          }
+        });
+        return this.filter ? sortCharts.filter(chart => chart.title === this.filter) : sortCharts
       }
     },
     component: {
