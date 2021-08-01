@@ -16,11 +16,15 @@
       <div class="chart__sort"></div>
     </div>
     <div class="charts__grid">
-      <app-chart
-        v-for="chart in filterCharts"
-        :key="chart.id"
-        :options="chart"
-      ></app-chart>
+      <div class="charts__chart"
+           v-for="chart in filterCharts"
+           :key="chart.id"
+      >
+        <app-chart
+          :options="chart"
+        ></app-chart>
+      </div>
+
     </div>
 
   </div>
@@ -38,6 +42,7 @@
           {
             id: 1,
             title: 'temperature',
+            date: '01.08.2021',
             data: {
               labels: ['June', 'July', 'August'],
               datasets: [{
@@ -52,6 +57,7 @@
           {
             id: 2,
             title: 'light',
+            date: '01.08.2021',
             data: {
               labels: ['June', 'July', 'August'],
               datasets: [{
@@ -66,11 +72,42 @@
           {
             id: 3,
             title: 'humidity',
+            date: '01.08.2021',
             data: {
               labels: ['June', 'July', 'August'],
               datasets: [{
                 label: 'Humidity',
                 data: [46, 13, 24],
+                backgroundColor: '#91C4F2',
+                borderColor: '#91C4F2',
+                borderWidth: 2
+              }]
+            }
+          },
+          {
+            id: 4,
+            title: 'humidity',
+            date: '31.07.2021',
+            data: {
+              labels: ['June', 'July', 'August'],
+              datasets: [{
+                label: 'Humidity',
+                data: [43, 23, 24],
+                backgroundColor: '#91C4F2',
+                borderColor: '#91C4F2',
+                borderWidth: 2
+              }]
+            }
+          },
+          {
+            id: 4,
+            title: 'humidity',
+            date: '4.08.2021',
+            data: {
+              labels: ['June', 'July', 'August'],
+              datasets: [{
+                label: 'Humidity',
+                data: [64, 48, 24],
                 backgroundColor: '#91C4F2',
                 borderColor: '#91C4F2',
                 borderWidth: 2

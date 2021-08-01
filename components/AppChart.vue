@@ -1,28 +1,54 @@
 <template>
   <div class="chart">
     <div class="chart__canvas mb-4">
-      <canvas :style="{ backgroundColor: color }" ref="chart"></canvas>
+      <canvas :style="{ backgroundColor: backgroundColor }" ref="chart"></canvas>
     </div>
     <div class="chart__options d-flex">
-      <div class="chart__type mr-2">
-        <b-form-select
-          v-model="type"
-          :options="[
-            {value: 'line', text: 'Line'},
-            {value: 'bar', text: 'Bar'},
-            {value: 'bubble', text: 'Bubble'},
-           ]"
-          @change="onChangeType"
-        ></b-form-select>
+      <div class="chart__select mr-2">
+        <div class="chart__label">Chart Type</div>
+        <div class="chart__value">
+          <b-form-select
+            v-model="type"
+            :options="[
+              {value: 'line', text: 'Line'},
+              {value: 'bar', text: 'Bar'},
+              {value: 'bubble', text: 'Bubble'},
+             ]"
+            @change="onChangeType"
+          ></b-form-select>
+        </div>
       </div>
-      <div class="chart__color">
-        <b-form-select
-          v-model="color"
-          :options="[
-            {value: '#FFF', text: 'White'},
-            {value: '#fafafa', text: 'Gray'},
-           ]"
-        ></b-form-select>
+      <div class="chart__select mr-2">
+        <div class="chart__label">Chart Color</div>
+        <div class="chart__value">
+          <b-form-select
+            v-model="chartColor"
+            :options="[
+              {value: '#EB9486', text: 'Red'},
+              {value: '#F3DE8A', text: 'Yellow'},
+              {value: '#91C4F2', text: 'Blue'}
+             ]"
+            @change="onChangeColor"
+          ></b-form-select>
+        </div>
+      </div>
+      <div class="chart__select">
+        <div class="chart__label">Background Color</div>
+        <div class="chart__value">
+          <b-form-select
+            v-model="backgroundColor"
+            :options="[
+              {value: '#FFF', text: 'White'},
+              {value: '#666', text: 'Gray'},
+             ]"
+          ></b-form-select>
+        </div>
+      </div>
+      <div class="chart__date ml-auto">
+        <div class="chart__label">Date</div>
+        <div class="chart__value">
+          {{options.date}}
+        </div>
       </div>
     </div>
 
@@ -38,13 +64,19 @@
     data() {
       return {
         type: '',
-        color: '#FFF',
+        backgroundColor: '#FFF',
+        chartColor: '',
         chart: null
       }
     },
     methods: {
       onChangeType() {
         this.chart.config.type = this.type
+        this.chart.update();
+      },
+      onChangeColor() {
+        this.chart.data.datasets[0].borderColor = this.chartColor
+        this.chart.data.datasets[0].backgroundColor = this.chartColor
         this.chart.update();
       }
     },
@@ -63,6 +95,7 @@
         data: this.options.data
       })
       this.type = this.chart.config.type
+      this.chartColor = this.chart.data.datasets[0].borderColor
     }
   }
 </script>
@@ -70,5 +103,10 @@
 <style scoped>
   canvas {
     transition: background-color .4s;
+  }
+
+  .chart__label {
+    font-size: 12px;
+    color: #aaa;
   }
 </style>
