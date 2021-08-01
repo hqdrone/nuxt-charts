@@ -13,6 +13,7 @@
            ]"
         ></b-form-select>
       </div>
+      <div class="chart__sort"></div>
     </div>
     <div class="charts__grid">
       <app-chart
