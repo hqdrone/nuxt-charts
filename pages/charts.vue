@@ -151,4 +151,13 @@
     grid-template-columns: 1fr 1fr;
     gap: 48px;
   }
+
+  @media (max-width: 991.98px) {
+    .charts__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .charts__chart {
+    min-width: 0;
+  }
 </style>

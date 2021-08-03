@@ -1,6 +1,6 @@
 <template>
   <div class="chart">
-    <div class="chart__canvas mb-4">
+    <div class="chart__canvas">
       <canvas :style="{ backgroundColor: backgroundColor }" ref="chart"></canvas>
     </div>
     <div class="chart__options d-flex">
@@ -84,7 +84,6 @@
       Chart.defaults.color = '#aaa'
       this.chart = new Chart(this.$refs.chart, {
         type: 'line',
-
         options: {
           scales: {
             y: {
