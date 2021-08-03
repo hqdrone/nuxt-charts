@@ -47,89 +47,13 @@
       return {
         filter: '',
         sort: 'newFirst',
-        charts: [
-          {
-            id: 1,
-            title: 'temperature',
-            date: '2021-08-05',
-            data: {
-              labels: ['June', 'July', 'August'],
-              datasets: [{
-                label: 'Temperature',
-                data: [21, 23, 19],
-                backgroundColor: '#EB9486',
-                borderColor: '#EB9486',
-                borderWidth: 2
-              }]
-            }
-          },
-          {
-            id: 2,
-            title: 'light',
-            date: '2021-08-03',
-            data: {
-              labels: ['June', 'July', 'August'],
-              datasets: [{
-                label: 'Light',
-                data: [45, 120, 60],
-                backgroundColor: '#F3DE8A',
-                borderColor: '#F3DE8A',
-                borderWidth: 2
-              }]
-            }
-          },
-          {
-            id: 3,
-            title: 'humidity',
-            date: '2021-08-02',
-            data: {
-              labels: ['June', 'July', 'August'],
-              datasets: [{
-                label: 'Humidity',
-                data: [46, 13, 24],
-                backgroundColor: '#91C4F2',
-                borderColor: '#91C4F2',
-                borderWidth: 2
-              }]
-            }
-          },
-          {
-            id: 4,
-            title: 'humidity',
-            date: '2021-07-31',
-            data: {
-              labels: ['June', 'July', 'August'],
-              datasets: [{
-                label: 'Humidity',
-                data: [43, 23, 24],
-                backgroundColor: '#91C4F2',
-                borderColor: '#91C4F2',
-                borderWidth: 2
-              }]
-            }
-          },
-          {
-            id: 5,
-            title: 'humidity',
-            date: '2021-08-04',
-            data: {
-              labels: ['June', 'July', 'August'],
-              datasets: [{
-                label: 'Humidity',
-                data: [64, 48, 24],
-                backgroundColor: '#91C4F2',
-                borderColor: '#91C4F2',
-                borderWidth: 2
-              }]
-            }
-          }
-        ]
+        charts: []
       }
     },
     computed: {
       filterSortCharts() {
         const ths = this
-        const sortCharts = this.charts.sort(function(a,b){
+        const sortCharts = this.charts.sort(function (a, b) {
           if (ths.sort === 'newFirst') {
             return Date.parse(b.date) - Date.parse(a.date);
           } else {
@@ -138,6 +62,21 @@
         });
         return this.filter ? sortCharts.filter(chart => chart.title === this.filter) : sortCharts
       }
+    },
+    methods: {
+      async getCharts() {
+        const chartsRef = this.$fire.database.ref('charts')
+        try {
+          const snapshot = await chartsRef.once('value')
+          this.charts = snapshot.val()
+          console.log(this.charts)
+        } catch (e) {
+          console.log(e)
+        }
+      }
+    },
+    mounted() {
+      this.getCharts()
     },
     component: {
       AppChart
@@ -157,6 +96,7 @@
       grid-template-columns: 1fr;
     }
   }
+
   .charts__chart {
     min-width: 0;
   }
