@@ -24,6 +24,9 @@
       </div>
     </div>
     <div class="charts__grid">
+      <div class="charts__compare">
+        <canvas ref="compareChart"></canvas>
+      </div>
       <div class="charts__chart"
            v-for="chart in filterSortCharts"
            :key="chart.id"
@@ -40,6 +43,7 @@
 
 <script>
   import AppChart from "../components/AppChart";
+  import Chart from 'chart.js/auto';
 
   export default {
     name: "charts",
@@ -47,7 +51,8 @@
       return {
         filter: '',
         sort: 'newFirst',
-        charts: []
+        charts: [],
+        compareChart: null
       }
     },
     computed: {
@@ -69,7 +74,6 @@
         try {
           const snapshot = await chartsRef.once('value')
           this.charts = snapshot.val()
-          console.log(this.charts)
         } catch (e) {
           console.log(e)
         }
@@ -77,6 +81,20 @@
     },
     mounted() {
       this.getCharts()
+
+      this.compareChart = new Chart(this.$refs.compareChart, {
+        type: 'line',
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          },
+        },
+        data: {
+          datasets: []
+        }
+      })
     },
     component: {
       AppChart
