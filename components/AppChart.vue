@@ -1,5 +1,13 @@
 <template>
   <div class="chart">
+    <div class="chart__compare">
+      <b-form-checkbox
+        v-model="compareStatus"
+        @change="onCompare"
+      >
+        Compare
+      </b-form-checkbox>
+    </div>
     <div class="chart__canvas">
       <canvas :style="{ backgroundColor: backgroundColor }" ref="chart"></canvas>
     </div>
@@ -60,13 +68,15 @@
   import Chart from 'chart.js/auto';
 
   export default {
+    emits: ['onCompare'],
     props: ['options'],
     data() {
       return {
         type: '',
         backgroundColor: '#FFF',
         chartColor: '',
-        chart: null
+        chart: null,
+        compareStatus: false
       }
     },
     methods: {
@@ -78,6 +88,9 @@
         this.chart.data.datasets[0].borderColor = this.chartColor
         this.chart.data.datasets[0].backgroundColor = this.chartColor
         this.chart.update();
+      },
+      onCompare() {
+        this.$emit('onCompare', this.chart)
       }
     },
     mounted() {
@@ -107,5 +120,10 @@
   .chart__label {
     font-size: 12px;
     color: #aaa;
+  }
+
+  .chart__compare {
+    display: flex;
+    justify-content: flex-end;
   }
 </style>

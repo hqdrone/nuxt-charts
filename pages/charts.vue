@@ -25,7 +25,11 @@
     </div>
     <div class="charts__grid">
       <div class="charts__compare">
-        <canvas ref="compareChart"></canvas>
+        <div class="charts__label">Compare chart</div>
+        <div class="charts__chart">
+
+          <canvas ref="compareChart"></canvas>
+        </div>
       </div>
       <div class="charts__chart"
            v-for="chart in filterSortCharts"
@@ -33,6 +37,7 @@
       >
         <app-chart
           :options="chart"
+          @onCompare="onCompare"
         ></app-chart>
       </div>
 
@@ -52,7 +57,8 @@
         filter: '',
         sort: 'newFirst',
         charts: [],
-        compareChart: null
+        compareChart: null,
+        compareCharts: []
       }
     },
     computed: {
@@ -77,6 +83,22 @@
         } catch (e) {
           console.log(e)
         }
+      },
+      onCompare(chart) {
+        if (this.compareCharts.includes(chart.id)) {
+          this.compareChart.data.datasets.splice(this.compareCharts.indexOf(chart.id), 1)
+          this.compareCharts = this.compareCharts.filter(el => el !== chart.id)
+          if (!this.compareCharts.length) {
+            this.compareChart.data.labels = []
+          }
+        } else {
+          this.compareCharts.push(chart.id)
+          this.compareChart.data.datasets.push(...chart.data.datasets)
+          if (this.compareChart.data.labels.length < chart.data.labels.length) {
+            this.compareChart.data.labels = chart.data.labels
+          }
+        }
+        this.compareChart.update()
       }
     },
     mounted() {
@@ -117,5 +139,9 @@
 
   .charts__chart {
     min-width: 0;
+  }
+
+  .charts__label {
+    text-align: center;
   }
 </style>
