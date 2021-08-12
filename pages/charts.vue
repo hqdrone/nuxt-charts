@@ -144,4 +144,7 @@
   .charts__label {
     text-align: center;
   }
+  .charts__compare {
+    min-width: 0;
+  }
 </style>
